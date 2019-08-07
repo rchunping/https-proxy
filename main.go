@@ -20,6 +20,10 @@ func main() {
 	server := &http.Server{
 		Addr: listen,
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if !basicAuth(w, r) {
+				return
+			}
+
 			if r.Method == http.MethodConnect {
 				handleTunneling(w, r)
 			} else {
